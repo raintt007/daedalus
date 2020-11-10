@@ -1,11 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-
+import Layout from '../components/layout/index.vue'
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+        {
+            path: 'dashboard',
+            name: 'Dashboard',
+            metra: {
+                icon: 'dashboard'
+            },
+            component: () => import('@/views/dashboard/index.vue')
+        }
+    ]
   },
   {
     path: "/about",
