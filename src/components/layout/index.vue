@@ -1,7 +1,11 @@
 <template>
   <a-layout class="layout-wrapper">
     <ui-sider v-model:collapsed="collapsed"></ui-sider>
-    <a-layout>
+    <div
+      :style="`width: ${sideMenuWidth}; min-width: ${sideMenuWidth};max-width: ${sideMenuWidth};`"
+      class="virtual-side"
+    ></div>
+    <a-layout class="layout-main">
       <ui-header v-model:collapsed='collapsed'></ui-header>
       <a-layout-content class="layout-content">
         <router-view />
@@ -22,6 +26,11 @@ export default {
     uiSider,
     uiFooter
   },
+  computed: {
+    sideMenuWidth() {
+      return this.collapsed ? '80px' : '200px'
+    },
+  },
   data() {
     return {
       collapsed: false
@@ -32,8 +41,14 @@ export default {
 
 <style lang="stylus" scoped>
 .layout-wrapper {
-    .layout-content {
-        flex: 1;
-    }
+  .layout-content {
+    overflow: initial;
+    margin: 24px 16px;
+    flex: 1;
+  }
+
+  .virtual-side {
+    transition: all 0.2s;
+  }
 }
 </style>

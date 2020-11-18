@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dashboard-wrapper">
         dashboard
     </div>
 </template>
@@ -15,5 +15,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+.dashboard-wrapper {
+    height: 100vh;
+    background-color #fff;
+}
 </style>

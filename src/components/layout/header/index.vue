@@ -47,7 +47,7 @@ export default {
 <style lang="stylus" scoped>
 .layout-header {
   background-color: #fff;
-
+    padding: 0;
   .trigger {
     font-size: 18px;
     line-height: 64px;
