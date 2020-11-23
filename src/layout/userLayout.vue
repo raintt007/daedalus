@@ -1,18 +1,13 @@
 <template>
     <div>
-        404
+        <router-view />
     </div>
 </template>
 
 <script>
-export default {
-    setup () {
-        return {}
-    },
-    mounted() {
-        console.log()
+    export default {
+        
     }
-}
 </script>
 
 <style lang="stylus" scoped>

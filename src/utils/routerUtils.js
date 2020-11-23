@@ -1,10 +1,37 @@
-import { basicLayout } from "@/layout";
+import {
+  basicLayout
+} from "@/layout";
 
+const test = [
+  {
+    'name': 'dashboard',
+    'parentId': 0,
+    'id': 1,
+    'meta': {
+      'icon': 'dashboard',
+      'title': '仪表盘',
+      'show': true
+    },
+    'component': 'routeView',
+    'redirect': '/dashboard/workplace'
+  },
+  {
+    'name': 'workplace',
+    'parentId': 1,
+    'id': 7,
+    'meta': {
+      'title': '工作台',
+      'show': true
+    },
+    'component': 'Workplace'
+  },
+]
 // 前端路由表
 const constantRouterComponents = {
   // 基础布局
   basicLayout,
-  "403": () => import(/* webpackChunkName: "error" */ "@/pages/error/403")
+  "Workplace": () => import('@/pages/dashboard/dashboard'),
+  "403": () => import( /* webpackChunkName: "error" */ "@/pages/error/403")
 };
 
 // 前端未找到页面路由（固定不用改）
@@ -15,14 +42,13 @@ const notFoundRouter = {
 };
 // 根级菜单
 const rootRouter = {
-  key: "",
-  name: "Home",
-  path: "",
-  component: "basicLayout",
-  redirect: "/dashboard",
+  key: '',
+  name: 'index',
+  path: '',
+  component: 'basicLayout',
+  redirect: '/dashboard',
   meta: {
-    title: "首页",
-    icon: ""
+    title: '首页'
   },
   children: []
 };
@@ -36,11 +62,12 @@ export const generatorDynamicRouter = token => {
   return new Promise((resolve, reject) => {
     const menuNav = [];
     const childrenNav = [];
-    listToTree([], childrenNav, 0);
+    listToTree(test, childrenNav, 0);
     rootRouter.children = childrenNav;
     menuNav.push(rootRouter);
     const routers = generator(menuNav);
     routers.push(notFoundRouter);
+    
     resolve(routers);
   });
 };
@@ -53,13 +80,20 @@ export const generatorDynamicRouter = token => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
-    const { title, show, hideChildren, hiddenHeaderContent, target, icon } =
-      item.meta || {};
+    const {
+      title,
+      show,
+      hideChildren,
+      hiddenHeaderContent,
+      target,
+      icon
+    } =
+    item.meta || {};
+    console.log('test', item)
     const currentRouter = {
       path: item.path || `${(parent && parent.path) || ""}/${item.key}`,
       name: item.name || item.key || "",
-      component:
-        constantRouterComponents[item.component || item.key] ||
+      component: constantRouterComponents[item.component || item.key] ||
         (() => import(`@/pages/${item.component}`)),
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
@@ -85,7 +119,6 @@ export const generator = (routerMap, parent) => {
       // Recursion
       currentRouter.children = generator(item.children, currentRouter);
     }
-
     return currentRouter;
   });
 };

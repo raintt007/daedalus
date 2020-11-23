@@ -1,4 +1,4 @@
 import app from "./app.js";
-import permission from "./async-router";
+import permission from "./permission";
 
 export default { app, permission };

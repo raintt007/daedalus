@@ -1,6 +1,6 @@
 <template>
   <a-layout class="layout-wrapper">
-    <ui-sider v-model:collapsed="collapsed" :menuData="menus"></ui-sider>
+    <ui-sider v-model:collapsed="collapsed" :menus="mainMenu"></ui-sider>
     <!-- <div
       :style="
         `margin-right: ${sideMenuWidth};width: ${sideMenuWidth}; min-width: ${sideMenuWidth};max-width: ${sideMenuWidth};`
@@ -21,42 +21,49 @@
 import uiHeader from "./header/index";
 import uiSider from "./sider/index";
 import uiFooter from "./footer/index";
+import {SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE} from "@/store/mutation-types"
 import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   components: {
     uiHeader,
     uiSider,
-    uiFooter
+    uiFooter,
   },
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => {
+      mainMenu: (state) => {
         return state.permission.addRouters;
-      }
+      },
     }),
     sideMenuWidth() {
       return this.collapsed ? "80px" : "200px";
-    }
+    },
   },
   data() {
     return {
       collapsed: false,
       isMobile: false,
-      menus: []
+      menus: [],
     };
   },
-  created() {
-    const routes = this.mainMenu.find(item => item.path === "/");
-    this.menus = (routes && routes.children) || [];
-    console.log(this.menus);
-    // 处理侧栏收起状态
-    this.$watch("collapsed", () => {
+  watch: {
+    mainMenu() {
+      const routes = this.mainMenu.find((item) => item.path === "/");
+      this.menus = (routes && routes.children) || [];
+
+    },
+    collapsed() {
       this.$store.commit(SIDEBAR_TYPE, this.collapsed);
-    });
-    this.$watch("isMobile", () => {
+    },
+    isMobile() {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile);
-    });
+    },
+  },
+  created() {
+    const routes = this.mainMenu.find((item) => item.path === "/");
+    this.menus = (routes && routes.children) || [];
+    console.log(this.menus)
   },
   mounted() {
     const userAgent = navigator.userAgent;
@@ -68,21 +75,24 @@ export default {
         }, 16);
       });
     }
-  }
+  },
 };
 </script>
 
 <style lang="stylus" scoped>
 .layout-wrapper {
-    display flex;
+  display: flex;
+
   .layout-content {
     overflow: initial;
     margin: 24px 16px;
     flex: 1;
   }
-    .layout-main {
-        transition: all 0.2s;
-    }
+
+  .layout-main {
+    transition: all 0.2s;
+  }
+
   .virtual-side {
     transition: all 0.2s;
   }
