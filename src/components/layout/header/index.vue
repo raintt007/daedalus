@@ -5,25 +5,16 @@
       class="trigger"
       @click="changeCollapsed(false)"
     />
-    <menu-fold-outlined
-      v-else
-      class="trigger"
-      @click="changeCollapsed(true)"
-    />
-
+    <menu-fold-outlined v-else class="trigger" @click="changeCollapsed(true)" />
   </a-layout-header>
-
 </template>
 
 <script>
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons-vue';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     MenuUnfoldOutlined,
-    MenuFoldOutlined,
+    MenuFoldOutlined
   },
   props: {
     collapsed: {
@@ -32,16 +23,14 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {};
   },
   methods: {
     changeCollapsed(status) {
-      this.$emit('update:collapsed', status);
+      this.$emit("update:collapsed", status);
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
