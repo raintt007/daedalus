@@ -4,30 +4,19 @@ import NProgress from "nprogress"; // progress bar
 NProgress.configure({
   showSpinner: false
 });
-let tt = false;
-router.addRoute({
-  path: '/dashboard',
-  name: 'dashboard',
-  component: () => import('@/pages/dashboard/dashboard.vue')
-});
-router.beforeEach((to, from, next) => {
-  
+router.beforeEach(async to => {
+  NProgress.start();
+  // 路由没有加载
+  if (store.getters.addRouters.length === 0) {
+    await store.dispatch("generateRoutes", {
+      roles: {
+        permissionList: ["admin"]
+      }
+    });
+    // 动态添加路由
+    router.addRoute(...store.getters.addRouters);
 
-    next()
-    // trigger a redirection
- 
-  // NProgress.start();
-  // if (store.getters.addRouters.length === 0) {
-  //   store.dispatch("generateRoutes", {
-  //     roles: {
-  //       permissionList: ['admin']
-  //     }
-  //   }).then(() => {
-  //     // 动态添加路由
-
-
-  //   });
-  // }
-  // next();
-  // NProgress.done();
+    return to.fullPath;
+  }
+  NProgress.done();
 });

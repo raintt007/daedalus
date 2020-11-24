@@ -21,49 +21,48 @@
 import uiHeader from "./header/index";
 import uiSider from "./sider/index";
 import uiFooter from "./footer/index";
-import {SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE} from "@/store/mutation-types"
+import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from "@/store/mutation-types";
 import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   components: {
     uiHeader,
     uiSider,
-    uiFooter,
+    uiFooter
   },
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: (state) => {
+      mainMenu: state => {
         return state.permission.addRouters;
-      },
+      }
     }),
     sideMenuWidth() {
       return this.collapsed ? "80px" : "200px";
-    },
+    }
   },
   data() {
     return {
       collapsed: false,
       isMobile: false,
-      menus: [],
+      menus: []
     };
   },
   watch: {
     mainMenu() {
-      const routes = this.mainMenu.find((item) => item.path === "/");
+      const routes = this.mainMenu.find(item => item.path === "/");
       this.menus = (routes && routes.children) || [];
-
     },
     collapsed() {
       this.$store.commit(SIDEBAR_TYPE, this.collapsed);
     },
     isMobile() {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile);
-    },
+    }
   },
   created() {
-    const routes = this.mainMenu.find((item) => item.path === "/");
+    const routes = this.mainMenu.find(item => item.path === "/");
     this.menus = (routes && routes.children) || [];
-    console.log(this.menus)
+    console.log(this.menus);
   },
   mounted() {
     const userAgent = navigator.userAgent;
@@ -75,7 +74,7 @@ export default {
         }, 16);
       });
     }
-  },
+  }
 };
 </script>
 

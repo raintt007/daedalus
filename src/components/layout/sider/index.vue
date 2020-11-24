@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import RouteMenu from '@/components/menu/RouteMenu.jsx'
+import RouteMenu from "@/components/menu/RouteMenu.jsx";
 export default {
   props: {
     mode: {
@@ -63,10 +63,9 @@ export default {
     };
   },
   created() {
-    
+    console.log("menus", this.menus);
   },
-  mounted() {
-  },
+  mounted() {}
 };
 </script>
 
