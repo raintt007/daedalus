@@ -1,6 +1,10 @@
 <template>
   <a-layout class="layout-wrapper">
-    <ui-sider v-model:collapsed="collapsed" :menus="menus"></ui-sider>
+    <ui-sider
+      v-model:collapsed="collapsed"
+      :menus="menus"
+      :i18nRender="i18nRender"
+    ></ui-sider>
     <!-- <div
       :style="
         `margin-right: ${sideMenuWidth};width: ${sideMenuWidth}; min-width: ${sideMenuWidth};max-width: ${sideMenuWidth};`
@@ -21,6 +25,7 @@
 import uiHeader from "@/components/layout/header/index";
 import uiSider from "@/components/layout/sider/index";
 import uiFooter from "@/components/layout/footer/index";
+import { i18nRender } from "@/locales";
 import { mapState, mapMutations, mapGetters } from "vuex";
 import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from "@/store/mutation-types";
 export default {
@@ -73,6 +78,9 @@ export default {
         }, 16);
       });
     }
+  },
+  methods: {
+    i18nRender
   }
 };
 </script>

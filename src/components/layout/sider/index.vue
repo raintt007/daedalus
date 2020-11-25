@@ -6,7 +6,11 @@
     :style="style"
     :theme="sideTheme"
   >
-    <route-menu :collapsed="collapsed" :menus="menus"></route-menu>
+    <route-menu
+      :collapsed="collapsed"
+      :menus="menus"
+      :i18nRender="i18nRender"
+    ></route-menu>
   </a-layout-sider>
 </template>
 

@@ -1,7 +1,5 @@
 import Menu from "ant-design-vue/es/menu";
-import Icon from "ant-design-vue/es/icon";
 import "ant-design-vue/es/menu/style";
-import "ant-design-vue/es/icon/style";
 const { SubMenu, Item: MenuItem } = Menu;
 
 const RouteMenuProps = {
@@ -70,25 +68,29 @@ const renderMenuItem = (h, item, i18nRender) => {
       cd.meta = Object.assign(cd.meta || {}, { hidden: true });
     });
   }
+  console.log(item.name);
   return (
     <MenuItem key={item.path}>
-      <CustomTag {...{ props, attrs }}>
+      <CustomTag
+        to={{ name: item.name }}
+        href={attrs.href || null}
+        target={attrs.target || null}
+      >
         {renderIcon(h, meta.icon)}
         {renderTitle(h, meta.title, i18nRender)}
       </CustomTag>
     </MenuItem>
   );
 };
-
+// 渲染菜单icon
 const renderIcon = (h, icon) => {
   if (icon === undefined || icon === "none" || icon === null) {
     return null;
   }
   const props = {};
-  typeof icon === "object" ? (props.component = icon) : (props.type = icon);
-  return <Icon {...{ props }} />;
+  return typeof icon === "object" ? icon : (props.type = icon);
 };
-
+// 渲染标题
 const renderTitle = (h, title, i18nRender) => {
   return <span>{(i18nRender && i18nRender(title)) || title}</span>;
 };
@@ -105,21 +107,26 @@ const RouteMenu = {
   props: RouteMenuProps,
   render(h) {
     const { mode, theme, menus, i18nRender } = this;
+    // 控制展开
     const handleOpenChange = openKeys => {
       if (mode === "horizontal") {
         this.openKeys = openKeys;
         return;
       }
-      const latestOpenKey = openKeys.find(keyu => !this.openKeys.includes(key));
-      if (!this.rootSubmenuKeys.includes(latestOpenKsy)) {
+      const latestOpenKey = openKeys.find(key => !this.openKeys.includes(key));
+      if (!this.rootSubmenuKeys.includes(latestOpenKey)) {
         this.openKeys = openKeys;
       } else {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     };
-    const select = menu => {
-      this.selectedKeys = menu.selectedKeys;
-      this.$emit("select", menu);
+    const select = (item, key, selectedKeys) => {
+      this.selectedKeys = selectedKeys;
+      this.$router.push({
+        path: key
+      });
+      //   this.$emit("select", item);
+      console.log(item);
     };
     const menuItems = menus.map(item => {
       if (item.hidden) {
@@ -128,14 +135,15 @@ const RouteMenu = {
 
       return renderMenu(h, item, i18nRender);
     });
+
     return (
       <Menu
         mode={mode}
         theme={theme}
         openKeys={this.openKeys}
         selectedKeys={this.selectedKeys}
-        select={select}
-        handleOpenChange={handleOpenChange}
+        onSelect={select}
+        onOpenChange={handleOpenChange}
       >
         {menuItems}
       </Menu>
@@ -185,7 +193,6 @@ const RouteMenu = {
   },
   mounted() {
     this.updateMenu();
-    console.log(this.menus);
   }
 };
 export default RouteMenu;

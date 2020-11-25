@@ -5,7 +5,7 @@ import router from "./router";
 import store from "./store";
 import "./permission";
 import "ant-design-vue/dist/antd.css";
-
+import i18n from "./locales";
 const app = createApp(App);
 
 // const i18n = initI18n('CN', 'US'); // 国际化
@@ -14,4 +14,5 @@ app
   .use(Antd)
   .use(store)
   .use(router)
+  .use(i18n)
   .mount("#app");
