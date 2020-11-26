@@ -20,7 +20,17 @@ export const asyncRouterMap = [
           permission: ["dashboard"]
         }
       },
-      // dashboard
+      {
+        path: "/dashboard/workplace",
+        name: "Workplace",
+        component: () => import("@/pages/dashboard/dashboard"),
+        meta: {
+          title: "menu.dashboard.workplace",
+          icon: <DashboardOutlined />,
+          keepAlive: true,
+          permission: ["dashboard"]
+        }
+      },
       {
         path: "/dashboard",
         name: "dashboard",
@@ -38,16 +48,6 @@ export const asyncRouterMap = [
             path: "https://www.baidu.com/",
             name: "Monitor",
             meta: { title: "menu.dashboard.monitor", target: "_blank" }
-          },
-          {
-            path: "/dashboard/workplace",
-            name: "Workplace",
-            component: () => import("@/pages/dashboard/dashboard"),
-            meta: {
-              title: "menu.dashboard.workplace",
-              keepAlive: true,
-              permission: ["dashboard"]
-            }
           }
         ]
       }

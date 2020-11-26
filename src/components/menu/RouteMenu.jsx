@@ -1,5 +1,6 @@
 import Menu from "ant-design-vue/es/menu";
 import "ant-design-vue/es/menu/style";
+import { RouterLink } from "vue-router";
 const { SubMenu, Item: MenuItem } = Menu;
 
 const RouteMenuProps = {
@@ -12,7 +13,6 @@ const RouteMenuProps = {
     default: false
   },
   i18nRender: {
-    type: Boolean,
     required: false,
     default: false
   },
@@ -57,8 +57,6 @@ const renderSubMenu = (h, item, i18nRender) => {
 const renderMenuItem = (h, item, i18nRender) => {
   const meta = Object.assign({}, item.meta);
   const target = meta.target || null;
-  const CustomTag = (target && "a") || "router-link";
-  const props = { to: { name: item.name } };
   const attrs = { href: item.path, target: target };
   if (item.children && item.hideChildrenInMenu) {
     // 把有子菜单的 并且 父菜单是要隐藏子菜单的
@@ -68,17 +66,19 @@ const renderMenuItem = (h, item, i18nRender) => {
       cd.meta = Object.assign(cd.meta || {}, { hidden: true });
     });
   }
-  console.log(item.name);
   return (
     <MenuItem key={item.path}>
-      <CustomTag
-        to={{ name: item.name }}
-        href={attrs.href || null}
-        target={attrs.target || null}
-      >
-        {renderIcon(h, meta.icon)}
-        {renderTitle(h, meta.title, i18nRender)}
-      </CustomTag>
+      {target && "a" ? (
+        <a href={attrs.href || null} target={attrs.target || null}>
+          {renderIcon(h, meta.icon)}
+          {renderTitle(h, meta.title, i18nRender)}
+        </a>
+      ) : (
+        <RouterLink to={{ name: item.name }}>
+          {renderIcon(h, meta.icon)}
+          {renderTitle(h, meta.title, i18nRender)}
+        </RouterLink>
+      )}
     </MenuItem>
   );
 };
@@ -122,11 +122,8 @@ const RouteMenu = {
     };
     const select = (item, key, selectedKeys) => {
       this.selectedKeys = selectedKeys;
-      this.$router.push({
-        path: key
-      });
       //   this.$emit("select", item);
-      console.log(item);
+      //   console.log(item);
     };
     const menuItems = menus.map(item => {
       if (item.hidden) {

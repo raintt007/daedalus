@@ -27,7 +27,6 @@ export default {
       default: false
     },
     i18nRender: {
-      type: Boolean,
       required: false,
       default: false
     },

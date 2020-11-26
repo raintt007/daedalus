@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-wrapper">
     dashboard
+    <button @click="jump">跳转</button>
   </div>
 </template>
 
@@ -9,7 +10,14 @@ export default {
   setup() {
     return {};
   },
-  mounted() {}
+  mounted() {},
+  methods: {
+    jump() {
+      this.$router.push({
+        name: "Home"
+      });
+    }
+  }
 };
 </script>
 
